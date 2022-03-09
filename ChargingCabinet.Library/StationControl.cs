@@ -10,7 +10,7 @@ namespace ChargingCabinet.Library
     public class StationControl
     {
         // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-        private enum LadeskabState
+        private enum ChargingCabinet
         {
             Available,
             Locked,
@@ -18,7 +18,7 @@ namespace ChargingCabinet.Library
         };
 
         // Her mangler flere member variable
-        private LadeskabState _state;
+        private ChargingCabinet _state;
         private IChargeControl _charger;
         private int _oldId;
         private IDoor _door;
@@ -32,7 +32,7 @@ namespace ChargingCabinet.Library
         {
             switch (_state)
             {
-                case LadeskabState.Available:
+                case ChargingCabinet.Available:
                     // Check for ladeforbindelse
                     if (_charger.Connected)
                     {
@@ -45,7 +45,7 @@ namespace ChargingCabinet.Library
                         }
 
                         Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
-                        _state = LadeskabState.Locked;
+                        _state = ChargingCabinet.Locked;
                     }
                     else
                     {
@@ -54,11 +54,11 @@ namespace ChargingCabinet.Library
 
                     break;
 
-                case LadeskabState.DoorOpen:
+                case ChargingCabinet.DoorOpen:
                     // Ignore
                     break;
 
-                case LadeskabState.Locked:
+                case ChargingCabinet.Locked:
                     // Check for correct ID
                     if (id == _oldId)
                     {
@@ -70,7 +70,7 @@ namespace ChargingCabinet.Library
                         }
 
                         Console.WriteLine("Tag din telefon ud af skabet og luk døren");
-                        _state = LadeskabState.Available;
+                        _state = ChargingCabinet.Available;
                     }
                     else
                     {
