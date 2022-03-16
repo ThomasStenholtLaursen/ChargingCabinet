@@ -48,7 +48,7 @@ namespace ChargingCabinet.Library
             {
                 DisplayText = "Device is fully charged!";
                 Connected = true;
-                _usbCharger.StopCharge();
+                StopCharge();
             }
             else if (Current > 5 && Current <= 500)
             {
@@ -58,10 +58,8 @@ namespace ChargingCabinet.Library
             else
             {
                 DisplayText = "Error!";
-                _usbCharger.StopCharge();
+                StopCharge();
             }
         }
-
-        
     }
 }
