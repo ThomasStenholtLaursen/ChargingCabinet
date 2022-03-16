@@ -8,5 +8,29 @@ namespace ChargingCabinet.Library
 {
     class Door : IDoor
     {
+       public event EventHandler<DoorOpenedEventArgs> DoorOpenedEvent;
+       public event EventHandler<DoorClosedEventArgs> DoorClosedEvent;
+
+       private bool DoorState { get; set; }
+
+       public void LockDoor()
+       {
+          DoorState = false;
+       }
+
+       public void UnlockDoor()
+       {
+          DoorState = true;
+       }
+
+       protected virtual void OnDoorOpened()
+       {
+          DoorOpenedEvent?.Invoke(this, new DoorOpenedEventArgs(){State = true});
+       }
+
+       protected virtual void OnDoorClosed()
+       {
+          DoorClosedEvent?.Invoke(this, new DoorClosedEventArgs(){State = false});
+       }
     }
 }
