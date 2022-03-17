@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace ChargingCabinet.Library
 {
-	class ChargeDisplay : IDisplay
+	public class ChargeDisplay : IDisplay
 	{
-		
+		public string PrintText { get; set; }
+
 		public void Print(string printString)
 		{
-
-			Console.WriteLine(printString);
+			PrintText = printString;
+			Console.WriteLine(PrintText);
 		}
 	}
 }
