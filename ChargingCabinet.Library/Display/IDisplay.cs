@@ -8,7 +8,7 @@ namespace ChargingCabinet.Library
 {
     interface IDisplay
     {
-
+	    string PrintText { get; set; }
 	    void Print(string printString);
     }
 }
