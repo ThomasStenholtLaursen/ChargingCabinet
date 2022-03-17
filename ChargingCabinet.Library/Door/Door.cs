@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChargingCabinet.Library
 {
-    class Door : IDoor
+   public class Door : IDoor
     {
        public event EventHandler<DoorOpenedEventArgs> DoorOpenedEvent;
        public event EventHandler<DoorClosedEventArgs> DoorClosedEvent;
@@ -23,12 +23,12 @@ namespace ChargingCabinet.Library
           DoorState = true;
        }
 
-       protected virtual void OnDoorOpened()
+       public virtual void OnDoorOpened()
        {
           DoorOpenedEvent?.Invoke(this, new DoorOpenedEventArgs(){State = true});
        }
 
-       protected virtual void OnDoorClosed()
+       public virtual void OnDoorClosed()
        {
           DoorClosedEvent?.Invoke(this, new DoorClosedEventArgs(){State = false});
        }
