@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChargingCabinet.Library
 {
-    class ChargeControl : IChargeControl
+    public class ChargeControl : IChargeControl
     {
         public double Current { get; set; }
         public string DisplayText { get; set; }
