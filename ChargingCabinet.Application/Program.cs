@@ -1,4 +1,5 @@
 ﻿using System;
+using ChargingCabinet.Library;
 
 namespace ChargingCabinet.Application
 {
@@ -7,6 +8,9 @@ namespace ChargingCabinet.Application
         static void Main(string[] args)
         {
             bool finish = false;
+            Door door = new Door();
+            RFIDReader rfidReader = new RFIDReader();
+
             do
             {
                 string input;
@@ -21,11 +25,11 @@ namespace ChargingCabinet.Application
                         break;
 
                     case 'O':
-                        door.OnDoorOpen();
+                        door.OnDoorOpened();
                         break;
 
                     case 'C':
-                        door.OnDoorClose();
+                        door.OnDoorClosed();
                         break;
 
                     case 'R':
@@ -33,7 +37,7 @@ namespace ChargingCabinet.Application
                         string idString = System.Console.ReadLine();
 
                         int id = Convert.ToInt32(idString);
-                        rfidReader.OnRfidRead(id);
+                        rfidReader.SetRFID(id);
                         break;
 
                     default:
