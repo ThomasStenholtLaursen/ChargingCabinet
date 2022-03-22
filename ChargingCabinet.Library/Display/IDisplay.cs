@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChargingCabinet.Library
 {
-    interface IDisplay
+   public interface IDisplay
     {
 	    string PrintText { get; set; }
 	    void Print(string printString);

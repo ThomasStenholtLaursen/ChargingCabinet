@@ -22,13 +22,20 @@ namespace ChargingCabinet.Library
         private IChargeControl _charger;
         private int _oldId;
         private IDoor _door;
+        private IDisplay _instructionsDisplay;
+        private IDisplay _chargeDisplay;
+        private bool State { get; set; }
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
         // Her mangler constructor
-        public StationControl()
+        public StationControl(IDoor door, IDisplay instructionDisplay, IDisplay chargeDisplay)
         {
-            //Test-constructor
+           _door = door;
+           _instructionsDisplay = instructionDisplay;
+           _chargeDisplay = chargeDisplay;
+           _door.DoorOpenedEvent += DoorOpened;
+           _door.DoorClosedEvent += DoorClosed;
         }
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
@@ -85,6 +92,16 @@ namespace ChargingCabinet.Library
             }
         }
 
-        // Her mangler de andre trigger handlere
-    }
+        public void DoorOpened(object sender, DoorOpenedEventArgs e)
+        {
+           State = e.State;
+           _instructionsDisplay.Print("Tilslut telefon");
+        }
+
+        public void DoorClosed(object sender, DoorClosedEventArgs e)
+        {
+           State = e.State;
+           _instructionsDisplay.Print("Indlæs RFID");
+        }
+   }
 }
