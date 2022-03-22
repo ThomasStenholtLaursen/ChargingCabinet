@@ -24,7 +24,7 @@ namespace ChargingCabinet.Library
         private IDoor _door;
         private IDisplay _instructionsDisplay;
         private IDisplay _chargeDisplay;
-        private bool State { get; set; }
+        public bool State { get; set; }
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
@@ -55,12 +55,12 @@ namespace ChargingCabinet.Library
                             writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", id);
                         }
 
-                        Console.WriteLine("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
+                        _instructionsDisplay.Print("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
                         _state = ChargingCabinet.Locked;
                     }
                     else
                     {
-                        Console.WriteLine("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+                       _instructionsDisplay.Print("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
                     }
 
                     break;
@@ -80,12 +80,12 @@ namespace ChargingCabinet.Library
                             writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", id);
                         }
 
-                        Console.WriteLine("Tag din telefon ud af skabet og luk døren");
+                        _instructionsDisplay.Print("Tag din telefon ud af skabet og luk døren");
                         _state = ChargingCabinet.Available;
                     }
                     else
                     {
-                        Console.WriteLine("Forkert RFID tag");
+                       _instructionsDisplay.Print("Forkert RFID tag");
                     }
 
                     break;
@@ -94,6 +94,7 @@ namespace ChargingCabinet.Library
 
         public void DoorOpened(object sender, DoorOpenedEventArgs e)
         {
+           _state = ChargingCabinet.DoorOpen;
            State = e.State;
            _instructionsDisplay.Print("Tilslut telefon");
         }
