@@ -13,11 +13,13 @@ namespace ChargingCabinet.Library
         public bool Connected { get; set; }
         
         private readonly IUsbCharger _usbCharger;
+        private readonly IDisplay _display;
 
-        public ChargeControl(IUsbCharger usbCharger)
+        public ChargeControl(IUsbCharger usbCharger, IDisplay display)
         {
             usbCharger.CurrentValueEvent += HandleNewCurrent;
             _usbCharger = usbCharger;
+            _display = display;
         }
 
         public void StartCharge()
@@ -41,23 +43,23 @@ namespace ChargingCabinet.Library
 
             if (Current == 0)
             {
-                DisplayText = "";
                 Connected = false;
             }
             else if (Current > 0 && Current <= 5)
             {
-                DisplayText = "Device is fully charged!";
+                _display.Print("Device is fully charged!");
                 Connected = true;
                 StopCharge();
             }
             else if (Current > 5 && Current <= 500)
             {
-                DisplayText = "Device is charging!";
+                _display.Print("Device is charging!");
                 Connected = true;
             }
             else
             {
-                DisplayText = "Error!";
+                _display.Print("Error!");
+                Connected = false;
                 StopCharge();
             }
         }

@@ -13,7 +13,7 @@ namespace ChargingCabinet.Application
             IDisplay chDisp = new ChargeDisplay();
             IDisplay insDisplay = new InstructionDisplay();
             IUsbCharger usbCharger = new UsbChargerSimulator();
-            IChargeControl chargeControl = new ChargeControl(usbCharger);
+            IChargeControl chargeControl = new ChargeControl(usbCharger, chDisp);
             StationControl stationControl = new StationControl(door,insDisplay,chDisp,rfidReader,chargeControl);
 
             do
