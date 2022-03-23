@@ -73,7 +73,7 @@ namespace ChargingCabinet.Library
                break;
 
             case ChargingCabinet.DoorOpen:
-               // Ignore
+                //Ignore
                break;
 
             case ChargingCabinet.Locked:
@@ -108,6 +108,7 @@ namespace ChargingCabinet.Library
 
       public void DoorClosed(object sender, DoorClosedEventArgs e)
       {
+          _state = ChargingCabinet.Available;
          State = e.State;
          _instructionsDisplay.Print("Indlæs RFID");
       }
