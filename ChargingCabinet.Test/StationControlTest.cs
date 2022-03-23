@@ -47,5 +47,11 @@ namespace ChargingCabinet.Test
             _rfidReader.RFIDDetectedEvent += Raise.EventWith(new RFIDEventArgs() { Detected = 10 });
             Assert.That(_utt._newId, Is.EqualTo(10));
         }
+
+        [Test]
+        public void TestRFidDetected_StateIsAvaliable()
+        {
+
+        }
     }
 }
