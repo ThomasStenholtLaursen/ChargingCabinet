@@ -14,6 +14,7 @@ namespace ChargingCabinet.Test
         private IDisplay _chargingDisplay;
         private IRFIDReader _rfidReader;
         private IChargeControl _chargeControl;
+        private IUsbCharger _usbCharger;
 
         [SetUp]
         public void Setup()
@@ -23,6 +24,7 @@ namespace ChargingCabinet.Test
             _chargingDisplay = Substitute.For<IDisplay>();
             _rfidReader = Substitute.For<IRFIDReader>();
             _chargeControl = Substitute.For<IChargeControl>();
+            _usbCharger = Substitute.For<IUsbCharger>();
             _uut = new StationControl(_door, _instructionDisplay, _chargingDisplay, _rfidReader, _chargeControl);
         }
 
@@ -49,20 +51,60 @@ namespace ChargingCabinet.Test
         }
 
         [Test]
-        public void TestRFidDetected_StateIsAvailable()
+        public void TestRFidDetected_StateIsAvailable_ChargerControlConnected_IsTrue()
         {
             _uut._state = StationControl.ChargingCabinet.Available;
 
-            _chargeControl.Connected = true;
-
-            
+            _chargeControl.IsConnected().Returns(true);
             _uut.RfidDetected(10);
 
             _door.Received(1).LockDoor();
             _chargeControl.Received(1).StartCharge();
             Assert.That(_uut._oldId, Is.EqualTo(10));
-            _instructionDisplay.Received().Print("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
+            _instructionDisplay.Received(1).Print("Skabet er låst og din telefon lades. Brug dit RFID tag til at låse op.");
             Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinet.Locked));
+        }
+
+        [Test]
+        public void TestRFidDetected_StateIsAvailable_ChargerControlConnected_IsFalse()
+        {
+            _uut._state = StationControl.ChargingCabinet.Available;
+            _chargeControl.IsConnected().Returns(false);
+            _uut.RfidDetected(10);
+
+            _instructionDisplay.Received(1).Print("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+        }
+
+        [TestCase(10)]
+        [TestCase(33)]
+        [TestCase(164)]
+        public void TestRFidDetected_StateIsLocked_MatchingID(int id)
+        {
+            _uut._state = StationControl.ChargingCabinet.Locked;
+            _uut._oldId = id;
+
+            _uut.RfidDetected(id);
+
+            _chargeControl.Received(1).StopCharge();
+            _door.Received(1).UnlockDoor();
+
+            _instructionDisplay.Received(1).Print("Tag din telefon ud af skabet og luk døren");
+
+            Assert.That(_uut._state, Is.EqualTo(StationControl.ChargingCabinet.Available));
+        }
+
+        [TestCase(10)]
+        [TestCase(33)]
+        [TestCase(164)]
+        public void TestRFidDetected_StateIsLocked_NotMatchingID(int id)
+        {
+            _uut._state = StationControl.ChargingCabinet.Locked;
+            _uut._oldId = 20;
+
+            _uut.RfidDetected(id);
+            
+
+            _instructionDisplay.Received(1).Print("Forkert RFID tag");
         }
     }
 }

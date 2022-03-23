@@ -20,7 +20,7 @@ namespace ChargingCabinet.Library
       // Her mangler flere member variable
       public ChargingCabinet _state { get; set; }
       private IChargeControl _charger;
-      public int _oldId { get; private set; }
+      public int _oldId { get; set; }
       public int _newId { private set; get; }
       public bool Connected { get; set; }
       private IDoor _door;
