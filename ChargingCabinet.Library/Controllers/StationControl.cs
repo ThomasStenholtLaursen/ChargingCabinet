@@ -10,7 +10,7 @@ namespace ChargingCabinet.Library
    public class StationControl
    {
       // Enum med tilstande ("states") svarende til tilstandsdiagrammet for klassen
-      private enum ChargingCabinet
+      public enum ChargingCabinet
       {
          Available,
          Locked,
@@ -18,10 +18,11 @@ namespace ChargingCabinet.Library
       };
 
       // Her mangler flere member variable
-      private ChargingCabinet _state;
+      public ChargingCabinet _state { get; set; }
       private IChargeControl _charger;
-      private int _oldId;
+      public int _oldId { get; private set; }
       public int _newId { private set; get; }
+      public bool Connected { get; set; }
       private IDoor _door;
       private IDisplay _instructionsDisplay;
       private IDisplay _chargeDisplay;
@@ -44,13 +45,14 @@ namespace ChargingCabinet.Library
       }
 
       // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
-      private void RfidDetected(int id)
+      public void RfidDetected(int id)
       {
          switch (_state)
          {
             case ChargingCabinet.Available:
                // Check for ladeforbindelse
-               if (_charger.IsConnected())
+               Connected = _charger.IsConnected();
+               if (Connected)
                {
                   _door.LockDoor();
                   _charger.StartCharge();
