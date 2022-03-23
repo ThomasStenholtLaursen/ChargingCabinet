@@ -10,6 +10,11 @@ namespace ChargingCabinet.Application
             bool finish = false;
             Door door = new Door();
             RFIDReader rfidReader = new RFIDReader();
+            IDisplay chDisp = new ChargeDisplay();
+            IDisplay insDisplay = new InstructionDisplay();
+            IUsbCharger usbCharger = new UsbChargerSimulator();
+            IChargeControl chargeControl = new ChargeControl(usbCharger);
+            StationControl stationControl = new StationControl(door,insDisplay,chDisp,rfidReader,chargeControl);
 
             do
             {
