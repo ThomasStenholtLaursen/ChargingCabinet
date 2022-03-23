@@ -40,7 +40,7 @@ namespace ChargingCabinet.Test
             _usbCharger.Received(1).StartCharge();
         }
 
-        
+        //[TestCase(0, null, false, 0, 0)]
         [TestCase(5, "Device is fully charged!",true,1,0)]
         [TestCase(3, "Device is fully charged!", true,1,0)]
         [TestCase(10, "Device is charging!", true,0,0)]
