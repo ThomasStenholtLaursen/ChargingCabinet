@@ -39,5 +39,18 @@ namespace ChargingCabinet.Test
          _utt.OnDoorClosed();
          Assert.That(_doorClosedEvent, Is.Not.Null);
       }
-   }
+
+      [Test]
+      public void UnlockDoorTest()
+      {
+          _utt.UnlockDoor();
+          Assert.That(_utt.DoorState, Is.EqualTo(true));
+      }
+      [Test]
+      public void LockDoorTest()
+      {
+	      _utt.LockDoor();
+	      Assert.That(_utt.DoorState, Is.EqualTo(false));
+      }
+    }
 }

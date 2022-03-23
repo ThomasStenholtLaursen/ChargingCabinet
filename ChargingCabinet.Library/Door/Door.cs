@@ -11,7 +11,7 @@ namespace ChargingCabinet.Library
        public event EventHandler<DoorOpenedEventArgs> DoorOpenedEvent;
        public event EventHandler<DoorClosedEventArgs> DoorClosedEvent;
 
-       private bool DoorState { get; set; }
+       public bool DoorState { get; private set; }
 
        public void LockDoor()
        {
