@@ -9,7 +9,6 @@ namespace ChargingCabinet.Library
     public class ChargeControl : IChargeControl
     {
         public double Current { get; set; }
-        public string DisplayText { get; set; }
         public bool Connected { get; set; }
         
         private readonly IUsbCharger _usbCharger;
