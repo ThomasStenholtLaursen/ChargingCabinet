@@ -8,12 +8,14 @@ namespace ChargingCabinet.Test
     {
         private IChargeControl _uut;
         private IUsbCharger _usbCharger;
+        private IDisplay _display;
 
         [SetUp]
         public void Setup()
         {
             _usbCharger = Substitute.For<IUsbCharger>();
-            _uut = new ChargeControl(_usbCharger);
+            _display = Substitute.For<IDisplay>();
+            _uut = new ChargeControl(_usbCharger, _display);
         }
 
         [TestCase(true, true)]
@@ -38,7 +40,7 @@ namespace ChargingCabinet.Test
             _usbCharger.Received(1).StartCharge();
         }
 
-        [TestCase(0, "", false,0,0)]
+        
         [TestCase(5, "Device is fully charged!",true,1,0)]
         [TestCase(3, "Device is fully charged!", true,1,0)]
         [TestCase(10, "Device is charging!", true,0,0)]
@@ -50,10 +52,17 @@ namespace ChargingCabinet.Test
 
             _usbCharger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs { Current = current });
             
-            Assert.That(_uut.DisplayText,Is.EqualTo(displayText));
             Assert.That(_uut.Connected,Is.EqualTo(connection));
+            _display.Received(1).Print(displayText);
             _usbCharger.Received(stop).StopCharge();
             _usbCharger.Received(start).StartCharge();
+        }
+
+        [TestCase(0, false)]
+        public void TestHandleNewCurrent_whereCurrentIsZero(double current, bool connection)
+        {
+            _usbCharger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs { Current = current });
+            Assert.That(_uut.Connected, Is.EqualTo(connection));
         }
     }
 }
