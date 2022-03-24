@@ -20,7 +20,7 @@ namespace ChargingCabinet.Library
 
         public double CurrentValue { get; private set; }
 
-        public bool Connected { get; private set; }
+        public bool Connected { get; set; }
 
         private bool _overload;
         private bool _charging;
@@ -30,7 +30,7 @@ namespace ChargingCabinet.Library
         public UsbChargerSimulator()
         {
             CurrentValue = 0.0;
-            Connected = true;
+            Connected = false;
             _overload = false;
 
             _timer = new System.Timers.Timer();

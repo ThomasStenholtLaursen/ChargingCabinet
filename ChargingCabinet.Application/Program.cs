@@ -19,25 +19,29 @@ namespace ChargingCabinet.Application
             do
             {
                 string input;
-                System.Console.WriteLine("Indtast E, O, C, R: ");
+                System.Console.WriteLine("Indtast E, O, T, C, R: ");
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
                 switch (input[0])
                 {
-                    case 'E':
+                    case 'E': //Stopper terminal
                         finish = true;
                         break;
 
-                    case 'O':
-                        door.OnDoorOpened();
+                    case 'O': //Bruger åbner dør
+                        door.OnDoorOpened(); 
+                        break;
+                    case 'T': //Bruger tilslutter telefon
+                        usbCharger.Connected = true;
+                        Console.WriteLine("'Bruger tilslutter telefon'"); 
                         break;
 
-                    case 'C':
-                        door.OnDoorClosed();
+                    case 'C': //Bruger lukker dør
+                        door.OnDoorClosed(); 
                         break;
 
-                    case 'R':
+                    case 'R': //Bruger indlæser med RFID
                         System.Console.WriteLine("Indtast RFID id: ");
                         string idString = System.Console.ReadLine();
 
