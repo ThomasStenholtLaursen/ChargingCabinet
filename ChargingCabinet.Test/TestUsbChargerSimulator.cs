@@ -24,6 +24,7 @@ namespace ChargingCabinet.Test
         [Test]
         public void ctor_IsConnected()
         {
+            _uut.Connected = true;
             Assert.That(_uut.Connected, Is.True);
         }
 
@@ -95,6 +96,7 @@ namespace ChargingCabinet.Test
         {
             ManualResetEvent pause = new ManualResetEvent(false);
             double lastValue = 0;
+            _uut.Connected = true;
 
             _uut.CurrentValueEvent += (o, args) =>
             {
@@ -149,6 +151,8 @@ namespace ChargingCabinet.Test
         public void SimulateOverload_Start_ReceivesHighValueImmediately()
         {
             double lastValue = 0;
+
+            _uut.Connected = true;
 
             _uut.CurrentValueEvent += (o, args) => { lastValue = args.Current; };
 
