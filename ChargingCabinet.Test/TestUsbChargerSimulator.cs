@@ -19,6 +19,7 @@ namespace ChargingCabinet.Test
         public void Setup()
         {
             _uut = new UsbChargerSimulator();
+            _uut.Connected = true;
         }
 
         [Test]
