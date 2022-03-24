@@ -11,7 +11,6 @@ namespace ChargingCabinet.Library
     public interface IChargeControl
     {
         public double Current { get; set; }
-        public bool Connected { get; set; }
         void StartCharge();
         void StopCharge();
         bool IsConnected();

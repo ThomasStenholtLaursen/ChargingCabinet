@@ -33,18 +33,18 @@ namespace ChargingCabinet.Test
             _usbCharger.Received(1).StartCharge();
         }
 
-        //[TestCase(0, null, false, 0, 0)]
-        [TestCase(5, "Device is fully charged!",1,0)]
-        [TestCase(3, "Device is fully charged!", 1,0)]
-        [TestCase(10, "Device is charging!",0,0)]
-        [TestCase(500, "Device is charging!",0,0)]
-        [TestCase(501, "Error!", 1,0)]
-        [TestCase(1000, "Error!",1,0)]
+        
+        [TestCase(5, "Device is fully charged!", 1, 0)]
+        [TestCase(3, "Device is fully charged!", 1, 0)]
+        [TestCase(10, "Device is charging!", 0, 0)]
+        [TestCase(500, "Device is charging!", 0, 0)]
+        [TestCase(501, "Error!", 1, 0)]
+        [TestCase(1000, "Error!", 1, 0)]
         public void TestHandleNewCurrent_Method_PropertiesChanged_and_ChargeCommandsCalled(double current, string displayText, int stop, int start)
         {
 
             _usbCharger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs { Current = current });
-            
+
             _display.Received(1).Print(displayText);
             _usbCharger.Received(stop).StopCharge();
             _usbCharger.Received(start).StartCharge();
@@ -55,6 +55,15 @@ namespace ChargingCabinet.Test
         {
             _usbCharger.CurrentValueEvent += Raise.EventWith(new CurrentEventArgs { Current = current });
             _display.Received(1).Print("");
+        }
+
+        [TestCase(true, true)]
+        [TestCase(false, false)]
+        public void TestUsbChargeReturnsConnected(bool connection, bool output)
+        {
+            //_uut.IsConnected();
+            _usbCharger.Connected.Returns(connection);
+            Assert.That(_uut.IsConnected, Is.EqualTo(output));
         }
     }
 }
