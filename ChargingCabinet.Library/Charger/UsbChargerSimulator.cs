@@ -48,7 +48,7 @@ namespace ChargingCabinet.Library
                 if (Connected && !_overload)
                 {
                     double newValue = MaxCurrent -
-                                      _ticksSinceStart * (MaxCurrent - FullyChargedCurrent) / (ChargeTimeMinutes * 60 * 1000 / CurrentTickInterval);
+                                      _ticksSinceStart * (MaxCurrent - FullyChargedCurrent) / (ChargeTimeMinutes * 1 * 0.1 / CurrentTickInterval); //Changed to see quick completion of charge
                     CurrentValue = Math.Max(newValue, FullyChargedCurrent);
                 }
                 else if (Connected && _overload)

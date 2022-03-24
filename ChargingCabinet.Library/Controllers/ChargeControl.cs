@@ -33,7 +33,7 @@ namespace ChargingCabinet.Library
 
         public bool IsConnected()
         {
-            return Connected;
+            return _usbCharger.Connected;
         }
 
         public void HandleNewCurrent(object sender, CurrentEventArgs e)
@@ -42,23 +42,20 @@ namespace ChargingCabinet.Library
 
             if (Current == 0)
             {
-                Connected = false;
+                _display.Print("");
             }
             else if (Current > 0 && Current <= 5)
             {
                 _display.Print("Device is fully charged!");
-                Connected = true;
                 StopCharge();
             }
             else if (Current > 5 && Current <= 500)
             {
                 _display.Print("Device is charging!");
-                Connected = true;
             }
             else
             {
                 _display.Print("Error!");
-                Connected = false;
                 StopCharge();
             }
         }
