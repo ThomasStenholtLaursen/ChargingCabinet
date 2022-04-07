@@ -1,0 +1,39 @@
+
+title RfidDetected()
+participant Display
+participant StationControl
+participant ChargeControl
+participant Door
+actor Log
+
+alt ChargingCabinet.Available
+activate StationControl
+ChargeControl<-StationControl:isConnected()
+par
+thread Connected
+
+Door<-StationControl:LockDoor()
+ChargeControl<-StationControl:StartCharge()
+StationControl<-StationControl: Set new Id
+StationControl->Log: Log("info")
+Display<-StationControl:Print("info")
+StationControl->StationControl: State = locked
+deactivate StationControl
+thread else
+activate StationControl
+Display<-StationControl:Print("info")
+deactivate StationControl
+end
+else ChargingCabinet.DoorOpen
+StationControl->StationControl: Ignore
+else ChargingCabinet.Locked
+par id == _oldId
+StationControl->ChargeControl:StopCharge()
+StationControl->Door:UnlockDoor()
+StationControl->Log: Log("Info")
+StationControl->Display:Print("Info")
+StationControl->StationControl:State = available
+thread else
+StationControl->Display:Print("Info")
+end
+end
