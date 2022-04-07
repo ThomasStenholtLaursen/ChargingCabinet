@@ -1,5 +1,6 @@
 ﻿using System;
 using ChargingCabinet.Library;
+using ChargingCabinet.Library.Logging;
 
 namespace ChargingCabinet.Application
 {
@@ -14,7 +15,8 @@ namespace ChargingCabinet.Application
             IDisplay insDisplay = new InstructionDisplay();
             IUsbCharger usbCharger = new UsbChargerSimulator();
             IChargeControl chargeControl = new ChargeControl(usbCharger, chDisp);
-            StationControl stationControl = new StationControl(door,insDisplay,chDisp,rfidReader,chargeControl);
+            ILog log = new FileLog();
+            StationControl stationControl = new StationControl(door,insDisplay,chDisp,rfidReader,chargeControl, log);
 
             do
             {
